@@ -1,0 +1,163 @@
+```html id="lucas-app">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Controla tus lucas</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #fde2ff, #e0f2ff);
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #444;
+}
+
+.container {
+  padding: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+.saldo {
+  font-size: 30px;
+  color: #4a90e2;
+  text-align: center;
+}
+
+.gasto {
+  color: #e53935;
+  font-weight: bold;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #ffb6d9;
+  color: white;
+  font-size: 16px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.nav button {
+  background: none;
+  color: #4a90e2;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>💸 Controla tus lucas</header>
+
+<div class="container" id="app"></div>
+
+<div class="nav">
+<button onclick="show('home')">Inicio</button>
+<button onclick="show('add')">Agregar</button>
+<button onclick="show('list')">Movimientos</button>
+</div>
+
+<script>
+let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+
+function guardar() {
+  localStorage.setItem("gastos", JSON.stringify(gastos));
+}
+
+function total() {
+  return gastos.reduce((sum, g) => sum + g.monto, 0);
+}
+
+function show(screen) {
+  const app = document.getElementById("app");
+
+  if(screen === "home") {
+    app.innerHTML = `
+      <div class="card">
+        <h3>Saldo gastado</h3>
+        <div class="saldo">$${total()}</div>
+      </div>
+    `;
+  }
+
+  if(screen === "add") {
+    app.innerHTML = `
+      <div class="card">
+        <h3>Agregar gasto</h3>
+        <input id="desc" placeholder="Descripción">
+        <input id="monto" type="number" placeholder="Monto">
+        <select id="cat">
+          <option>Comida</option>
+          <option>Transporte</option>
+          <option>Hogar</option>
+        </select>
+        <button onclick="agregar()">Guardar gasto</button>
+      </div>
+    `;
+  }
+
+  if(screen === "list") {
+    let lista = gastos.map(g => `
+      <div class="card">
+        <b>${g.desc}</b><br>
+        <span class="gasto">-$${g.monto}</span> | ${g.cat}
+      </div>
+    `).join("");
+
+    app.innerHTML = lista || "<p>No hay gastos aún 💕</p>";
+  }
+}
+
+function agregar() {
+  const desc = document.getElementById("desc").value;
+  const monto = parseInt(document.getElementById("monto").value);
+  const cat = document.getElementById("cat").value;
+
+  if(!desc || !monto) return alert("Completa los datos");
+
+  gastos.push({desc, monto, cat});
+  guardar();
+  show("list");
+}
+
+show("home");
+</script>
+
+</body>
+</html>
+```
