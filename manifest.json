@@ -1,0 +1,9 @@
+{
+  "name": "CuidaTusLucas",
+  "short_name": "Lucas",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f6fb",
+  "theme_color": "#7b5cff",
+  "icons": []
+}
