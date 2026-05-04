@@ -1,162 +1,383 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Móvil - CuidaTusLucas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .pastel-gradient {
-            background: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%);
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .text-expense { color: #ef4444; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#001a42",
+                        "secondary": "#006c49",
+                        "surface": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "outline-variant": "#c6c6cd",
+                        "on-primary-fixed": "#131b2e",
+                        "inverse-surface": "#213145",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#d3e4fe",
+                        "primary": "#000000",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-fixed": "#002113",
+                        "inverse-primary": "#bec6e0",
+                        "surface-bright": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d8e2ff",
+                        "on-secondary-container": "#00714d",
+                        "tertiary": "#000000",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "secondary-fixed-dim": "#4edea3",
+                        "surface-tint": "#565e74",
+                        "surface-container": "#e5eeff",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#004395",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#001a42",
+                        "on-primary-container": "#7c839b",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#131b2e",
+                        "on-surface-variant": "#45464d",
+                        "on-primary": "#ffffff",
+                        "outline": "#76777d",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-tertiary-container": "#3980f4",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed-dim": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "40px",
+                        "xl": "64px",
+                        "sm": "12px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-50 pb-24">
-
-    <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 px-4 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
-                <span class="material-icons-round text-white text-xl">account_balance_wallet</span>
-            </div>
-            <h1 class="text-xl font-black text-violet-900 tracking-tight">CuidaTusLucas</h1>
-        </div>
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-violet-100">
-    </header>
-
-    <main class="p-4 space-y-6">
-        
-        <!-- Hero Card -->
-        <div class="pastel-gradient rounded-3xl p-6 text-white shadow-lg shadow-violet-200">
-            <p class="text-xs font-semibold uppercase tracking-wider opacity-80 mb-1">Patrimonio Neto</p>
-            <h2 class="text-4xl font-bold mb-4">$124,500.00</h2>
-            <div class="inline-flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full text-xs font-medium">
-                <span class="material-icons-round text-sm">trending_up</span>
-                +4.2% este mes
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                <div class="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 text-pink-500">
-                    <span class="material-icons-round">payments</span>
-                </div>
-                <p class="text-xs text-slate-500 font-medium">Gasto Mensual</p>
-                <p class="text-lg font-bold text-expense">$3,240.50</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center mb-3 text-emerald-500">
-                    <span class="material-icons-round">savings</span>
-                </div>
-                <p class="text-xs text-slate-500 font-medium">Ahorro</p>
-                <p class="text-lg font-bold text-emerald-600">$1,850.00</p>
-            </div>
-        </div>
-
-        <!-- Category Progress -->
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-            <h3 class="font-bold text-slate-900 mb-4">Gasto por Categoría</h3>
-            <div class="space-y-4">
-                <!-- Alimentación -->
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <span class="material-icons-round text-violet-400">restaurant</span>
-                            <span class="text-sm font-semibold text-slate-700">Alimentación</span>
-                        </div>
-                        <span class="text-xs font-bold text-slate-500">45%</span>
-                    </div>
-                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-pink-400 rounded-full" style="width: 45%"></div>
-                    </div>
-                </div>
-                <!-- Educación -->
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <span class="material-icons-round text-violet-400">school</span>
-                            <span class="text-sm font-semibold text-slate-700">Educación</span>
-                        </div>
-                        <span class="text-xs font-bold text-slate-500">30%</span>
-                    </div>
-                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-violet-400 rounded-full" style="width: 30%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Transactions -->
-        <div class="space-y-4">
-            <div class="flex justify-between items-center px-1">
-                <h3 class="font-bold text-slate-900">Transacciones Recientes</h3>
-                <button class="text-xs font-bold text-violet-600 uppercase tracking-wider">Ver Todo</button>
-            </div>
-            
-            <div class="space-y-3">
-                <!-- Transaction Item -->
-                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-pink-500">
-                            <span class="material-icons-round">shopping_bag</span>
-                        </div>
-                        <div>
-                            <p class="font-bold text-slate-900">Supermercado Jumbo</p>
-                            <p class="text-xs text-slate-400">Hoy, 14:30</p>
-                        </div>
-                    </div>
-                    <p class="font-black text-expense">-$85.20</p>
-                </div>
-                <!-- Transaction Item -->
-                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-500">
-                            <span class="material-icons-round">local_gas_station</span>
-                        </div>
-                        <div>
-                            <p class="font-bold text-slate-900">Gasolina Shell</p>
-                            <p class="text-xs text-slate-400">Ayer, 09:15</p>
-                        </div>
-                    </div>
-                    <p class="font-black text-expense">-$45.00</p>
-                </div>
-                <!-- Transaction Item -->
-                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500">
-                            <span class="material-icons-round">payments</span>
-                        </div>
-                        <div>
-                            <p class="font-bold text-slate-900">Salario Mensual</p>
-                            <p class="text-xs text-slate-400">01 Oct, 2023</p>
-                        </div>
-                    </div>
-                    <p class="font-black text-emerald-600">+$2,800.00</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-100 px-6 py-3 pb-8 flex justify-between items-center z-50">
-        <div class="flex flex-col items-center gap-1 text-violet-600">
-            <span class="material-icons-round">home</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider">Inicio</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 text-slate-400">
-            <span class="material-icons-round">receipt_long</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider">Gastos</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 text-slate-400">
-            <span class="material-icons-round">settings</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider">Ajustes</span>
-        </div>
-    </nav>
-
-</body>
-</html>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-pink-100 dark:border-slate-800 shadow-sm shadow-pink-100/50 flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent font-inter tracking-tight">CuidaTusLucas</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-pink-50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-pink-50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-purple-100 border border-purple-200 overflow-hidden">
+<img alt="Avatar de usuario" class="h-full w-full object-cover" data-alt="A clean, professional headshot of a modern financial user, presented in a minimalist circular avatar style. The lighting is soft and flattering, emphasizing a trustworthy and organized persona. The background is a soft, blurred gradient of lavender and rose, aligning with a corporate pastel aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnzjfZiGYq-xcMnNL1z_yy7bu1pH-eoH4rKY4BmLVfsSaVSklh75paug5zk8gr_H9VHfLjz6TW89kFkoZYXJIakXGhmgpbiOqQ9BTvkAObZE07c-8GNY-8fEY7XPdTAI1OU9Dqn64CRFfchOKd7OXPDPPACgyvcYmXAW4B8cVrIpT-Q6GxF6hNbYgF4Vg5cnpKLaBh1kPuTISHdMlm3_EuCNfR9GETdgrEf2RU7jdBcDSaH-HijX2edXihNLUvWl4YhH3pTCKr5BU"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full pt-20 px-4 h-screen w-64 hidden md:flex flex-col border-r border-pink-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 z-40">
+<div class="mb-8 px-2">
+<h2 class="text-lg font-black text-purple-600 font-inter">Mi Billetera</h2>
+<p class="text-xs text-slate-500 font-medium">Gestión inteligente</p>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-purple-50 transition-all duration-200 ease-in-out text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Resumen</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-purple-50 transition-all duration-200 ease-in-out text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Presupuesto</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-purple-50 transition-all duration-200 ease-in-out text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Gastos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-purple-50 transition-all duration-200 ease-in-out text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span>Gmail Sync</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg transition-all duration-200 ease-in-out text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span>Perfil</span>
+</a>
+</nav>
+<div class="mt-auto pb-8">
+<button class="w-full py-3 bg-purple-600 text-white rounded-xl font-bold shadow-lg shadow-purple-200 active:scale-95 transition-all">
+                Añadir Gasto
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 pb-24 md:pb-8 px-6 min-h-screen">
+<div class="max-w-5xl mx-auto">
+<header class="mb-10">
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Configuración de Datos</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Personaliza tus límites mensuales y sincroniza tu información bancaria.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Section 1: Mi Presupuesto (High Density Card) -->
+<section class="lg:col-span-8 bg-white border border-outline-variant/30 rounded-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center bg-gradient-to-r from-purple-50/50 to-pink-50/50">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-purple-600" data-icon="account_balance_wallet">account_balance_wallet</span>
+                                Mi Presupuesto
+                            </h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Establece límites para tus gastos mensuales</p>
+</div>
+<span class="px-3 py-1 bg-white border border-purple-100 text-purple-700 font-bold text-[10px] rounded-full uppercase tracking-widest">Ajuste Manual</span>
+</div>
+<div class="p-6">
+<div class="space-y-4">
+<!-- Budget Item -->
+<div class="group flex items-center justify-between p-4 rounded-xl border border-transparent hover:border-pink-100 hover:bg-pink-50/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Alimentación</p>
+<p class="font-label-sm text-on-surface-variant">Supermercado y restaurantes</p>
+</div>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+<input class="w-32 pl-7 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-mono text-right focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all" type="number" value="450000"/>
+</div>
+</div>
+<!-- Budget Item -->
+<div class="group flex items-center justify-between p-4 rounded-xl border border-transparent hover:border-purple-100 hover:bg-purple-50/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Educación</p>
+<p class="font-label-sm text-on-surface-variant">Cursos, libros y universidad</p>
+</div>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+<input class="w-32 pl-7 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-mono text-right focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all" type="number" value="120000"/>
+</div>
+</div>
+<!-- Budget Item -->
+<div class="group flex items-center justify-between p-4 rounded-xl border border-transparent hover:border-secondary-container/30 hover:bg-secondary-container/10 transition-all">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="savings">savings</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Ahorro</p>
+<p class="font-label-sm text-on-surface-variant">Fondo de emergencia e inversión</p>
+</div>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+<input class="w-32 pl-7 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-mono text-right focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all" type="number" value="200000"/>
+</div>
+</div>
+<!-- Budget Item -->
+<div class="group flex items-center justify-between p-4 rounded-xl border border-transparent hover:border-pink-100 hover:bg-pink-50/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Transporte</p>
+<p class="font-label-sm text-on-surface-variant">Bencina, TAG y transporte público</p>
+</div>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+<input class="w-32 pl-7 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-mono text-right focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all" type="number" value="85000"/>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex justify-end">
+<button class="px-6 py-2.5 bg-primary text-on-primary font-bold rounded-lg shadow-md active:scale-95 transition-all">Guardar Presupuesto</button>
+</div>
+</div>
+</section>
+<!-- Right Column Sidebars -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Section 4: Preferencias -->
+<section class="bg-white border border-outline-variant/30 rounded-xl p-6 shadow-sm">
+<h3 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-pink-600" data-icon="settings">settings</span>
+                            Preferencias
+                        </h3>
+<div class="space-y-4">
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="relative mt-1">
+<input checked="" class="peer h-5 w-5 rounded border-pink-300 text-pink-600 focus:ring-pink-500" type="checkbox"/>
+</div>
+<div>
+<p class="font-body-md font-medium text-on-surface">Resaltar gastos en rojo</p>
+<p class="font-label-sm text-on-surface-variant">Marca visualmente transacciones que excedan el presupuesto diario.</p>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="relative mt-1">
+<input class="peer h-5 w-5 rounded border-pink-300 text-pink-600 focus:ring-pink-500" type="checkbox"/>
+</div>
+<div>
+<p class="font-body-md font-medium text-on-surface">Notificaciones semanales</p>
+<p class="font-label-sm text-on-surface-variant">Recibe un resumen cada lunes sobre tu desempeño financiero.</p>
+</div>
+</label>
+</div>
+</section>
+<!-- Section 3: Importar/Exportar -->
+<section class="bg-white border border-outline-variant/30 rounded-xl p-6 shadow-sm">
+<h3 class="font-headline-md text-headline-md mb-4">Datos Locales</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors group">
+<span class="material-symbols-outlined text-slate-600 mb-2 group-hover:scale-110 transition-transform" data-icon="download">download</span>
+<span class="font-label-md">Exportar</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors group">
+<span class="material-symbols-outlined text-slate-600 mb-2 group-hover:scale-110 transition-transform" data-icon="upload">upload</span>
+<span class="font-label-md">Importar</span>
+</button>
+</div>
+<p class="mt-4 text-[11px] text-center text-on-surface-variant uppercase tracking-tighter">Formatos compatibles: CSV, JSON</p>
+</section>
+</div>
+<!-- Section 2: Conexión Gmail (Full Width) -->
+<section class="lg:col-span-12 bg-white border border-outline-variant/30 rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center bg-slate-50">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-white rounded-lg border border-slate-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-red-500" data-icon="mail">mail</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md">Conexión Gmail</h2>
+<p class="font-label-sm text-on-surface-variant">Sincronización automática mediante Google Apps Script</p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-secondary/10 text-secondary rounded-full">
+<div class="h-2 w-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="text-xs font-bold">Activo</span>
+</div>
+</div>
+<div class="p-8 grid md:grid-cols-2 gap-10">
+<div class="space-y-4">
+<p class="font-body-md font-semibold text-on-surface">Script de Conexión</p>
+<div class="relative">
+<textarea class="w-full font-mono text-sm p-4 bg-slate-900 text-slate-300 rounded-xl border-none focus:ring-2 focus:ring-purple-400" placeholder="Pega aquí tu script de Google Apps Script..." rows="6">function onNewTransaction(e) {
+  var data = e.parameter;
+  CuidaTusLucas.sync(data);
+}</textarea>
+<button class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 px-4 py-3 bg-secondary text-white font-bold rounded-lg shadow-lg shadow-secondary/20 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="sync">sync</span>
+                                    Probar Conexión
+                                </button>
+<button class="px-4 py-3 border border-outline-variant text-on-surface-variant font-bold rounded-lg hover:bg-slate-50 transition-colors">
+                                    Actualizar
+                                </button>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/30 relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-headline-md text-headline-md mb-2">Instrucciones</h4>
+<ol class="space-y-4 font-body-sm text-on-surface-variant list-decimal list-inside">
+<li>Accede a <span class="font-bold text-on-surface">script.google.com</span></li>
+<li>Crea un nuevo proyecto de "Apps Script".</li>
+<li>Copia el código de arriba y pégalo en el editor.</li>
+<li>Despliega como "Aplicación Web" con acceso "Cualquiera".</li>
+<li>Copia la URL del despliegue en el campo de configuración superior.</li>
+</ol>
+<a class="inline-block mt-6 text-purple-600 font-bold hover:underline" href="#">Ver guía detallada →</a>
+</div>
+<!-- Background Decoration -->
+<div class="absolute -bottom-8 -right-8 opacity-10 scale-150">
+<span class="material-symbols-outlined text-[160px]" data-icon="integration_instructions">integration_instructions</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full h-16 flex justify-around items-center px-2 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-pink-100 dark:border-slate-800 shadow-[0_-4px_12px_rgba(236,72,153,0.1)] md:hidden z-50">
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-110 duration-300">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-bold uppercase">Inicio</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-110 duration-300">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-[10px] font-bold uppercase">Gastos</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-110 duration-300">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+<span class="text-[10px] font-bold uppercase">Sync</span>
+</button>
+<button class="flex flex-col items-center justify-center text-purple-600 dark:text-purple-400 scale-110 duration-300">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold uppercase">Perfil</span>
+</button>
+</nav>
+</body></html>
