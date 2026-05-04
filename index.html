@@ -1,163 +1,263 @@
-```html id="lucas-app">
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Controla tus lucas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CuidaTusLucas</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(180deg, #fde2ff, #e0f2ff);
+:root{
+  --primary:#7b5cff; --bg:#f5f6fb; --card:#fff;
+  --text:#1f2430; --muted:#8a8fa3; --danger:#d14;
 }
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text)}
+.app{max-width:420px;margin:auto;min-height:100vh;padding-bottom:70px}
 
-header {
-  padding: 20px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: #444;
-}
+/* header */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:5}
+.brand{font-weight:800;color:var(--primary)}
+.icon{width:30px;height:30px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center}
 
-.container {
-  padding: 15px;
-}
+/* sections */
+.section{padding:16px;display:none}
+.section.active{display:block}
 
-.card {
-  background: white;
-  border-radius: 15px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
-}
+/* cards */
+.card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
 
-.saldo {
-  font-size: 30px;
-  color: #4a90e2;
-  text-align: center;
-}
+/* dashboard */
+.row{display:flex;gap:10px}
+.stat{flex:1;padding:14px;border-radius:14px}
+.stat.red{background:#ffe9ea;color:#c33}
+.stat.gray{background:#f0f1f6}
+.big{font-size:22px;font-weight:800}
 
-.gasto {
-  color: #e53935;
-  font-weight: bold;
-}
+/* button */
+.btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;margin-top:10px}
 
-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #ffb6d9;
-  color: white;
-  font-size: 16px;
-}
+/* inputs */
+.input{width:100%;padding:12px;border-radius:12px;border:none;background:#f2f3f8;margin-top:10px}
 
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
+/* categorías */
+.cats{display:flex;gap:10px;margin-top:10px}
+.cat{flex:1;text-align:center;padding:12px;border-radius:14px;background:#f0f1f6;cursor:pointer}
+.cat.active{background:#e8e2ff;color:var(--primary);font-weight:700}
 
-.nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: white;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-}
+/* filtros */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{padding:8px 12px;border-radius:999px;background:#eef0f6;cursor:pointer}
+.chip.active{background:#e8e2ff;color:var(--primary);font-weight:700}
 
-.nav button {
-  background: none;
-  color: #4a90e2;
-  font-weight: bold;
-}
+/* lista */
+.item{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:12px;border-radius:14px;margin-top:8px}
+.neg{color:#c33;font-weight:700}
+.small{color:var(--muted);font-size:12px}
+.del{background:#fff;border:none;color:var(--danger);font-size:18px;cursor:pointer}
+
+/* nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
+.nav button{background:none;border:none;font-size:18px}
+
+/* chart container */
+.chart-wrap{height:220px}
 </style>
 </head>
 
 <body>
+<div class="app">
 
-<header>💸 Controla tus lucas</header>
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">💜 CuidaTusLucas</div>
+  <div class="icon">×</div>
+</div>
 
-<div class="container" id="app"></div>
+<!-- INICIO -->
+<div id="home" class="section active">
+  <div class="card">
+    <div class="small">Resumen del mes</div>
+    <h2>Estado Financiero</h2>
+    <div class="row">
+      <div class="stat red">
+        Gastos<br><span id="gastosTotal" class="big">$0</span>
+      </div>
+      <div class="stat gray">
+        Ahorros<br><span id="ahorroTotal" class="big">$0</span>
+      </div>
+    </div>
+  </div>
 
+  <button class="btn">📧 Sincronizar Gmail</button>
+
+  <div class="card">
+    <h3>Categorías de gasto</h3>
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- AÑADIR -->
+<div id="add" class="section">
+  <div class="card">
+    <h3>Añadir gasto</h3>
+    <input id="monto" class="input" placeholder="Monto">
+    <input id="desc" class="input" placeholder="¿Dónde gastaste?">
+
+    <div class="cats">
+      <div class="cat active" onclick="selCat(this)">Alimentación</div>
+      <div class="cat" onclick="selCat(this)">Educación</div>
+      <div class="cat" onclick="selCat(this)">Ahorro</div>
+    </div>
+
+    <button class="btn" onclick="agregar()">Agregar</button>
+  </div>
+</div>
+
+<!-- TRANSACCIONES -->
+<div id="list" class="section">
+  <h3>Transacciones</h3>
+
+  <div class="filters">
+    <div class="chip active" onclick="filtrar('Todas', this)">Todas</div>
+    <div class="chip" onclick="filtrar('Alimentación', this)">Alimentación</div>
+    <div class="chip" onclick="filtrar('Educación', this)">Educación</div>
+    <div class="chip" onclick="filtrar('Ahorro', this)">Ahorro</div>
+  </div>
+
+  <div id="lista"></div>
+</div>
+
+<!-- NAV -->
 <div class="nav">
-<button onclick="show('home')">Inicio</button>
-<button onclick="show('add')">Agregar</button>
-<button onclick="show('list')">Movimientos</button>
+  <button onclick="go('home')">🏠</button>
+  <button onclick="go('add')">➕</button>
+  <button onclick="go('list')">📄</button>
+</div>
+
 </div>
 
 <script>
-let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+let gastos = JSON.parse(localStorage.getItem("gastos"))||[];
+let filtroActual = "Todas";
+let chart;
 
-function guardar() {
-  localStorage.setItem("gastos", JSON.stringify(gastos));
+// utils
+const CLP = v => "$" + (v||0).toLocaleString("es-CL");
+
+// storage
+function guardar(){ localStorage.setItem("gastos", JSON.stringify(gastos)); }
+
+// navegación
+function go(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  render();
 }
 
-function total() {
-  return gastos.reduce((sum, g) => sum + g.monto, 0);
+// categorías
+function selCat(el){
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
 }
 
-function show(screen) {
-  const app = document.getElementById("app");
-
-  if(screen === "home") {
-    app.innerHTML = `
-      <div class="card">
-        <h3>Saldo gastado</h3>
-        <div class="saldo">$${total()}</div>
-      </div>
-    `;
-  }
-
-  if(screen === "add") {
-    app.innerHTML = `
-      <div class="card">
-        <h3>Agregar gasto</h3>
-        <input id="desc" placeholder="Descripción">
-        <input id="monto" type="number" placeholder="Monto">
-        <select id="cat">
-          <option>Comida</option>
-          <option>Transporte</option>
-          <option>Hogar</option>
-        </select>
-        <button onclick="agregar()">Guardar gasto</button>
-      </div>
-    `;
-  }
-
-  if(screen === "list") {
-    let lista = gastos.map(g => `
-      <div class="card">
-        <b>${g.desc}</b><br>
-        <span class="gasto">-$${g.monto}</span> | ${g.cat}
-      </div>
-    `).join("");
-
-    app.innerHTML = lista || "<p>No hay gastos aún 💕</p>";
-  }
-}
-
-function agregar() {
-  const desc = document.getElementById("desc").value;
+// agregar
+function agregar(){
   const monto = parseInt(document.getElementById("monto").value);
-  const cat = document.getElementById("cat").value;
+  const desc = document.getElementById("desc").value;
+  const cat = document.querySelector('.cat.active').innerText;
 
-  if(!desc || !monto) return alert("Completa los datos");
+  if(!monto || !desc) return;
 
-  gastos.push({desc, monto, cat});
+  gastos.unshift({id:Date.now(), monto, desc, cat, fecha:new Date().toISOString()});
   guardar();
-  show("list");
+  document.getElementById("monto").value="";
+  document.getElementById("desc").value="";
+  go('list');
 }
 
-show("home");
+// eliminar
+function eliminar(id){
+  gastos = gastos.filter(g=>g.id!==id);
+  guardar();
+  render();
+}
+
+// filtros
+function filtrar(cat, el){
+  filtroActual = cat;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderLista();
+}
+
+// render general
+function render(){
+  renderResumen();
+  renderLista();
+  renderChart();
+}
+
+// resumen
+function renderResumen(){
+  const totalGastos = gastos.reduce((a,b)=>a+b.monto,0);
+  const totalAhorro = gastos.filter(g=>g.cat==="Ahorro").reduce((a,b)=>a+b.monto,0);
+  document.getElementById("gastosTotal").innerText = CLP(totalGastos);
+  document.getElementById("ahorroTotal").innerText = CLP(totalAhorro);
+}
+
+// lista
+function renderLista(){
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  const data = filtroActual==="Todas" ? gastos : gastos.filter(g=>g.cat===filtroActual);
+
+  data.forEach(g=>{
+    const div = document.createElement("div");
+    div.className="item";
+    const fecha = new Date(g.fecha).toLocaleDateString("es-CL");
+    div.innerHTML = `
+      <div>
+        <b>${g.cat}</b><br>
+        <span class="small">${g.desc} • ${fecha}</span>
+      </div>
+      <div>
+        <span class="neg">-${CLP(g.monto)}</span>
+        <button class="del" onclick="eliminar(${g.id})">🗑</button>
+      </div>
+    `;
+    lista.appendChild(div);
+  });
+}
+
+// chart
+function renderChart(){
+  const ctx = document.getElementById('chart');
+  if(!ctx) return;
+
+  const sums = {Alimentación:0, Educación:0, Ahorro:0};
+  gastos.forEach(g=>{ if(sums[g.cat]!==undefined) sums[g.cat]+=g.monto; });
+
+  const data = {
+    labels: Object.keys(sums),
+    datasets:[{
+      data: Object.values(sums),
+      backgroundColor:["#ff6b6b","#4dabf7","#7b5cff"]
+    }]
+  };
+
+  if(chart) chart.destroy();
+  chart = new Chart(ctx, { type:'doughnut', data });
+}
+
+// init
+render();
 </script>
 
 </body>
 </html>
-```
