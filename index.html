@@ -1,263 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
-<head<link rel="manifest" href="manifest.json">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CuidaTusLucas</title>
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-:root{
-  --primary:#7b5cff; --bg:#f5f6fb; --card:#fff;
-  --text:#1f2430; --muted:#8a8fa3; --danger:#d14;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text)}
-.app{max-width:420px;margin:auto;min-height:100vh;padding-bottom:70px}
-
-/* header */
-.header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:5}
-.brand{font-weight:800;color:var(--primary)}
-.icon{width:30px;height:30px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center}
-
-/* sections */
-.section{padding:16px;display:none}
-.section.active{display:block}
-
-/* cards */
-.card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
-
-/* dashboard */
-.row{display:flex;gap:10px}
-.stat{flex:1;padding:14px;border-radius:14px}
-.stat.red{background:#ffe9ea;color:#c33}
-.stat.gray{background:#f0f1f6}
-.big{font-size:22px;font-weight:800}
-
-/* button */
-.btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;margin-top:10px}
-
-/* inputs */
-.input{width:100%;padding:12px;border-radius:12px;border:none;background:#f2f3f8;margin-top:10px}
-
-/* categorías */
-.cats{display:flex;gap:10px;margin-top:10px}
-.cat{flex:1;text-align:center;padding:12px;border-radius:14px;background:#f0f1f6;cursor:pointer}
-.cat.active{background:#e8e2ff;color:var(--primary);font-weight:700}
-
-/* filtros */
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.chip{padding:8px 12px;border-radius:999px;background:#eef0f6;cursor:pointer}
-.chip.active{background:#e8e2ff;color:var(--primary);font-weight:700}
-
-/* lista */
-.item{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:12px;border-radius:14px;margin-top:8px}
-.neg{color:#c33;font-weight:700}
-.small{color:var(--muted);font-size:12px}
-.del{background:#fff;border:none;color:var(--danger);font-size:18px;cursor:pointer}
-
-/* nav */
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
-.nav button{background:none;border:none;font-size:18px}
-
-/* chart container */
-.chart-wrap{height:220px}
-</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Móvil - CuidaTusLucas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .pastel-gradient {
+            background: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%);
+        }
+        .text-expense { color: #ef4444; }
+    </style>
 </head>
+<body class="bg-slate-50 pb-24">
 
-<body>
-<div class="app">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
+                <span class="material-icons-round text-white text-xl">account_balance_wallet</span>
+            </div>
+            <h1 class="text-xl font-black text-violet-900 tracking-tight">CuidaTusLucas</h1>
+        </div>
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-violet-100">
+    </header>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="brand">💜 CuidaTusLucas</div>
-  <div class="icon">×</div>
-</div>
+    <main class="p-4 space-y-6">
+        
+        <!-- Hero Card -->
+        <div class="pastel-gradient rounded-3xl p-6 text-white shadow-lg shadow-violet-200">
+            <p class="text-xs font-semibold uppercase tracking-wider opacity-80 mb-1">Patrimonio Neto</p>
+            <h2 class="text-4xl font-bold mb-4">$124,500.00</h2>
+            <div class="inline-flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full text-xs font-medium">
+                <span class="material-icons-round text-sm">trending_up</span>
+                +4.2% este mes
+            </div>
+        </div>
 
-<!-- INICIO -->
-<div id="home" class="section active">
-  <div class="card">
-    <div class="small">Resumen del mes</div>
-    <h2>Estado Financiero</h2>
-    <div class="row">
-      <div class="stat red">
-        Gastos<br><span id="gastosTotal" class="big">$0</span>
-      </div>
-      <div class="stat gray">
-        Ahorros<br><span id="ahorroTotal" class="big">$0</span>
-      </div>
-    </div>
-  </div>
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 text-pink-500">
+                    <span class="material-icons-round">payments</span>
+                </div>
+                <p class="text-xs text-slate-500 font-medium">Gasto Mensual</p>
+                <p class="text-lg font-bold text-expense">$3,240.50</p>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center mb-3 text-emerald-500">
+                    <span class="material-icons-round">savings</span>
+                </div>
+                <p class="text-xs text-slate-500 font-medium">Ahorro</p>
+                <p class="text-lg font-bold text-emerald-600">$1,850.00</p>
+            </div>
+        </div>
 
-  <button class="btn">📧 Sincronizar Gmail</button>
+        <!-- Category Progress -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 class="font-bold text-slate-900 mb-4">Gasto por Categoría</h3>
+            <div class="space-y-4">
+                <!-- Alimentación -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="material-icons-round text-violet-400">restaurant</span>
+                            <span class="text-sm font-semibold text-slate-700">Alimentación</span>
+                        </div>
+                        <span class="text-xs font-bold text-slate-500">45%</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-pink-400 rounded-full" style="width: 45%"></div>
+                    </div>
+                </div>
+                <!-- Educación -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="material-icons-round text-violet-400">school</span>
+                            <span class="text-sm font-semibold text-slate-700">Educación</span>
+                        </div>
+                        <span class="text-xs font-bold text-slate-500">30%</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-violet-400 rounded-full" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <div class="card">
-    <h3>Categorías de gasto</h3>
-    <div class="chart-wrap">
-      <canvas id="chart"></canvas>
-    </div>
-  </div>
-</div>
+        <!-- Recent Transactions -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+                <h3 class="font-bold text-slate-900">Transacciones Recientes</h3>
+                <button class="text-xs font-bold text-violet-600 uppercase tracking-wider">Ver Todo</button>
+            </div>
+            
+            <div class="space-y-3">
+                <!-- Transaction Item -->
+                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-pink-500">
+                            <span class="material-icons-round">shopping_bag</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">Supermercado Jumbo</p>
+                            <p class="text-xs text-slate-400">Hoy, 14:30</p>
+                        </div>
+                    </div>
+                    <p class="font-black text-expense">-$85.20</p>
+                </div>
+                <!-- Transaction Item -->
+                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-500">
+                            <span class="material-icons-round">local_gas_station</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">Gasolina Shell</p>
+                            <p class="text-xs text-slate-400">Ayer, 09:15</p>
+                        </div>
+                    </div>
+                    <p class="font-black text-expense">-$45.00</p>
+                </div>
+                <!-- Transaction Item -->
+                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500">
+                            <span class="material-icons-round">payments</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">Salario Mensual</p>
+                            <p class="text-xs text-slate-400">01 Oct, 2023</p>
+                        </div>
+                    </div>
+                    <p class="font-black text-emerald-600">+$2,800.00</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-<!-- AÑADIR -->
-<div id="add" class="section">
-  <div class="card">
-    <h3>Añadir gasto</h3>
-    <input id="monto" class="input" placeholder="Monto">
-    <input id="desc" class="input" placeholder="¿Dónde gastaste?">
-
-    <div class="cats">
-      <div class="cat active" onclick="selCat(this)">Alimentación</div>
-      <div class="cat" onclick="selCat(this)">Educación</div>
-      <div class="cat" onclick="selCat(this)">Ahorro</div>
-    </div>
-
-    <button class="btn" onclick="agregar()">Agregar</button>
-  </div>
-</div>
-
-<!-- TRANSACCIONES -->
-<div id="list" class="section">
-  <h3>Transacciones</h3>
-
-  <div class="filters">
-    <div class="chip active" onclick="filtrar('Todas', this)">Todas</div>
-    <div class="chip" onclick="filtrar('Alimentación', this)">Alimentación</div>
-    <div class="chip" onclick="filtrar('Educación', this)">Educación</div>
-    <div class="chip" onclick="filtrar('Ahorro', this)">Ahorro</div>
-  </div>
-
-  <div id="lista"></div>
-</div>
-
-<!-- NAV -->
-<div class="nav">
-  <button onclick="go('home')">🏠</button>
-  <button onclick="go('add')">➕</button>
-  <button onclick="go('list')">📄</button>
-</div>
-
-</div>
-
-<script>
-let gastos = JSON.parse(localStorage.getItem("gastos"))||[];
-let filtroActual = "Todas";
-let chart;
-
-// utils
-const CLP = v => "$" + (v||0).toLocaleString("es-CL");
-
-// storage
-function guardar(){ localStorage.setItem("gastos", JSON.stringify(gastos)); }
-
-// navegación
-function go(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  render();
-}
-
-// categorías
-function selCat(el){
-  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// agregar
-function agregar(){
-  const monto = parseInt(document.getElementById("monto").value);
-  const desc = document.getElementById("desc").value;
-  const cat = document.querySelector('.cat.active').innerText;
-
-  if(!monto || !desc) return;
-
-  gastos.unshift({id:Date.now(), monto, desc, cat, fecha:new Date().toISOString()});
-  guardar();
-  document.getElementById("monto").value="";
-  document.getElementById("desc").value="";
-  go('list');
-}
-
-// eliminar
-function eliminar(id){
-  gastos = gastos.filter(g=>g.id!==id);
-  guardar();
-  render();
-}
-
-// filtros
-function filtrar(cat, el){
-  filtroActual = cat;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderLista();
-}
-
-// render general
-function render(){
-  renderResumen();
-  renderLista();
-  renderChart();
-}
-
-// resumen
-function renderResumen(){
-  const totalGastos = gastos.reduce((a,b)=>a+b.monto,0);
-  const totalAhorro = gastos.filter(g=>g.cat==="Ahorro").reduce((a,b)=>a+b.monto,0);
-  document.getElementById("gastosTotal").innerText = CLP(totalGastos);
-  document.getElementById("ahorroTotal").innerText = CLP(totalAhorro);
-}
-
-// lista
-function renderLista(){
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
-  const data = filtroActual==="Todas" ? gastos : gastos.filter(g=>g.cat===filtroActual);
-
-  data.forEach(g=>{
-    const div = document.createElement("div");
-    div.className="item";
-    const fecha = new Date(g.fecha).toLocaleDateString("es-CL");
-    div.innerHTML = `
-      <div>
-        <b>${g.cat}</b><br>
-        <span class="small">${g.desc} • ${fecha}</span>
-      </div>
-      <div>
-        <span class="neg">-${CLP(g.monto)}</span>
-        <button class="del" onclick="eliminar(${g.id})">🗑</button>
-      </div>
-    `;
-    lista.appendChild(div);
-  });
-}
-
-// chart
-function renderChart(){
-  const ctx = document.getElementById('chart');
-  if(!ctx) return;
-
-  const sums = {Alimentación:0, Educación:0, Ahorro:0};
-  gastos.forEach(g=>{ if(sums[g.cat]!==undefined) sums[g.cat]+=g.monto; });
-
-  const data = {
-    labels: Object.keys(sums),
-    datasets:[{
-      data: Object.values(sums),
-      backgroundColor:["#ff6b6b","#4dabf7","#7b5cff"]
-    }]
-  };
-
-  if(chart) chart.destroy();
-  chart = new Chart(ctx, { type:'doughnut', data });
-}
-
-// init
-render();
-</script>
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-100 px-6 py-3 pb-8 flex justify-between items-center z-50">
+        <div class="flex flex-col items-center gap-1 text-violet-600">
+            <span class="material-icons-round">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider">Inicio</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 text-slate-400">
+            <span class="material-icons-round">receipt_long</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider">Gastos</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 text-slate-400">
+            <span class="material-icons-round">settings</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider">Ajustes</span>
+        </div>
+    </nav>
 
 </body>
 </html>
