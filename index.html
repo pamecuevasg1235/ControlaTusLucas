@@ -1,299 +1,207 @@
-<!-- 
-  CuidaTusLucas - Dashboard Principal
-  Estética: Pastel (Rosa/Morado)
-  Regla: Gastos resaltados en Rojo
-  Tecnologías: HTML5, Tailwind CSS, Google Fonts (Inter)
--->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CuidaTusLucas - Panel de Control</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .bg-pastel-gradient {
-            background: linear-gradient(135deg, #fdf2f8 0%, #f5f3ff 100%);
-        }
-        .sidebar-active {
-            background-color: #f5f3ff;
-            color: #7c3aed;
-            border-radius: 0.75rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CuidaTusLucas 💜</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+body { font-family: 'Inter', sans-serif; }
+.pantalla { display: none; }
+.activa { display: block; }
+</style>
 </head>
-<body class="bg-pastel-gradient min-h-screen flex">
-   <did id="pantallainicio> 
-<div id="pantallaPerfil" style="display:none; padding:20px;">
-  <h2 class="text-2xl font-bold mb-4">Mi Perfil</h2>
 
-  <input id="nombre" placeholder="Tu nombre"
-  style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ccc;">
+<body class="bg-gradient-to-br from-pink-100 to-violet-100 min-h-screen p-4">
 
-  <input id="correo" placeholder="Tu correo"
-  style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ccc;">
+<div class="max-w-md mx-auto bg-white rounded-3xl p-6 shadow-xl">
 
-  <button onclick="guardarPerfil()"
-  style="width:100%; padding:10px; background:#7b5cff; color:white; border:none; border-radius:10px;">
-  Guardar Perfil
-  </button>
+<h1 class="text-2xl font-black mb-4 text-center">💜 CuidaTusLucas</h1>
+
+<!-- NAV -->
+<div class="flex justify-around mb-4">
+<button onclick="mostrarPantalla('home')">🏠</button>
+<button onclick="mostrarPantalla('movimientos')">💸</button>
+<button onclick="mostrarPantalla('metas')">🎯</button>
+<button onclick="mostrarPantalla('perfil')">👤</button>
 </div>
-    <!-- Barra Lateral (Sidebar) -->
-    <aside class="w-64 bg-white border-r border-violet-100 flex flex-col fixed h-full z-20">
-        <div class="p-6">
-            <div class="flex items-center gap-2 mb-8">
-                <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-violet-500 rounded-xl flex items-center justify-center text-white shadow-lg">
-                    <span class="material-icons-round">account_balance_wallet</span>
-                </div>
-                <div>
-                    <h1 class="text-xl font-black text-slate-900 leading-none">CuidaTusLucas</h1>
-                    <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Gestión Financiera</p>
-                </div>
-            </div>
 
-            <nav class="space-y-1">
-                <a href="#" class="flex items-center gap-3 px-4 py-3 sidebar-active font-semibold">
-                    <span class="material-icons-round">dashboard</span>
-                    Panel de Control
-                </a>
-                <a href="movimientos.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all">
-                    <span class="material-icons-round">receipt_long</span>
-                    Movimientos
-                </a>
-                <a href="analisis.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all">
-                    <span class="material-icons-round">analytics</span>
-                    Análisis
-                </a>
-                <a href="perfil.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all">
-                    <span class="material-icons-round">person</span>
-                    Perfil
-                </a>
-                <a href="configuracion.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all">
-                    <span class="material-icons-round">settings</span>
-                    Configuración
-                </a>
-            </nav>
-        </div>
+<!-- HOME -->
+<div id="home" class="pantalla activa">
 
-        <div class="mt-auto p-6 space-y-4">
-            <button class="w-full bg-slate-900 text-white rounded-xl py-3 px-4 font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-md active:scale-95">
-                <span class="material-icons-round">add_circle</span>
-                Añadir Gasto
-            </button>
-            <button class="w-full flex items-center gap-3 px-4 py-2 text-slate-400 hover:text-red-500 transition-colors text-sm font-medium">
-                <span class="material-icons-round text-lg">logout</span>
-                Cerrar Sesión
-            </button>
-        </div>
-    </aside>
+<div class="bg-violet-50 p-4 rounded-xl mb-4">
+<p>Total: <span id="total">$0</span></p>
+<p>Ingresos: <span id="ingresos" class="text-green-500">$0</span></p>
+<p>Gastos: <span id="gastos" class="text-red-500">$0</span></p>
+</div>
 
-    <!-- Contenido Principal -->
-    <main class="flex-1 ml-64 p-8">
-        <!-- Header Superior -->
-        <header class="flex justify-between items-center mb-10">
-            <div>
-                <h2 class="text-3xl font-black text-slate-900">Hola, Diego</h2>
-                <p class="text-slate-500 font-medium">Aquí tienes el resumen de tus lucas hoy.</p>
-            </div>
-            <div class="flex items-center gap-6">
-                <div class="relative">
-                    <span class="material-icons-round text-slate-400 cursor-pointer hover:text-violet-500 transition-colors">notifications</span>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-pink-500 rounded-full border-2 border-white"></span>
-                </div>
-                <div class="flex items-center gap-3 bg-white p-1.5 pr-4 rounded-full border border-violet-100 shadow-sm">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Diego" alt="Perfil" class="w-10 h-10 rounded-full bg-violet-100">
-                    <span class="font-bold text-slate-700">Diego M.</span>
-                </div>
-            </div>
-        </header>
+<div id="ultimos"></div>
 
-        <!-- Grid de Tarjetas -->
-        <div class="grid grid-cols-12 gap-6 mb-8">
-            <!-- Patrimonio Neto -->
-            <div class="col-span-12 lg:col-span-8 bg-white rounded-3xl p-8 border border-violet-100 shadow-sm relative overflow-hidden">
-                <div class="relative z-10">
-                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Patrimonio Neto Total</p>
-                    <h3 class="text-6xl font-black text-slate-900 mb-4">$4.250.000</h3>
-                    <div class="flex items-center gap-2 text-emerald-500 font-bold bg-emerald-50 px-3 py-1 rounded-full w-fit">
-                        <span class="material-icons-round text-sm">trending_up</span>
-                        +12.5% este mes
-                    </div>
-                </div>
-                <!-- Decoración Visual -->
-                <div class="absolute right-0 bottom-0 w-1/2 h-full opacity-10">
-                    <svg viewBox="0 0 400 200" class="w-full h-full text-violet-500">
-                        <path d="M0 200C50 180 100 120 150 140S250 20 300 80S400 0 400 0V200H0Z" fill="currentColor"></path>
-                    </svg>
-                </div>
-            </div>
+</div>
 
-            <!-- Resumen Rápido -->
-            <div class="col-span-12 lg:col-span-4 space-y-4">
-                <div class="bg-pink-50 border border-pink-100 rounded-3xl p-6 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-pink-500 rounded-2xl flex items-center justify-center text-white">
-                            <span class="material-icons-round">payments</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-pink-400 uppercase tracking-wider">Efectivo</p>
-                            <p class="text-xl font-black text-slate-900">$850.000</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-violet-50 border border-violet-100 rounded-3xl p-6 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-violet-500 rounded-2xl flex items-center justify-center text-white">
-                            <span class="material-icons-round">show_chart</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-violet-400 uppercase tracking-wider">Inversiones</p>
-                            <p class="text-xl font-black text-slate-900">$3.400.000</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- MOVIMIENTOS -->
+<div id="movimientos" class="pantalla">
 
-        <div class="grid grid-cols-12 gap-6">
-            <!-- Presupuesto Mensual -->
-            <div class="col-span-12 lg:col-span-5 bg-white rounded-3xl p-8 border border-violet-100 shadow-sm">
-                <div class="flex justify-between items-start mb-8">
-                    <h4 class="text-xl font-black text-slate-900">Presupuesto Mensual</h4>
-                    <span class="text-xs font-black bg-red-50 text-red-500 px-3 py-1 rounded-lg uppercase tracking-tighter animate-pulse">Alerta de Límite</span>
-                </div>
-                
-                <div class="space-y-8">
-                    <!-- Categoría 1 -->
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-600">Alimentación</span>
-                            <span class="text-red-500">$180.000 / $150.000</span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-500 rounded-full" style="width: 100%"></div>
-                        </div>
-                        <p class="text-[10px] font-bold text-red-500 mt-2">Has superado el límite por $30.000</p>
-                    </div>
+<input id="desc" placeholder="Descripción" class="w-full p-2 border rounded mb-2">
+<input id="monto" type="number" placeholder="Monto" class="w-full p-2 border rounded mb-2">
 
-                    <!-- Categoría 2 -->
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-600">Transporte</span>
-                            <span class="text-violet-600">$45.000 / $80.000</span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-violet-400 rounded-full" style="width: 56%"></div>
-                        </div>
-                    </div>
+<select id="tipo" class="w-full p-2 border rounded mb-2">
+<option value="gasto">Gasto</option>
+<option value="ingreso">Ingreso</option>
+</select>
 
-                    <!-- Categoría 3 -->
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-600">Entretenimiento</span>
-                            <span class="text-pink-600">$95.000 / $100.000</span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-pink-400 rounded-full" style="width: 95%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<select id="categoria" class="w-full p-2 border rounded mb-2">
+<option>Comida</option>
+<option>Transporte</option>
+<option>Casa</option>
+<option>Otro</option>
+</select>
 
-            <!-- Movimientos Recientes -->
-            <div class="col-span-12 lg:col-span-7 bg-white rounded-3xl p-8 border border-violet-100 shadow-sm">
-                <div class="flex justify-between items-center mb-8">
-                    <h4 class="text-xl font-black text-slate-900">Movimientos Recientes</h4>
-                    <button class="text-sm font-bold text-violet-600 hover:underline">Ver todo</button>
-                </div>
+<button onclick="agregar()" class="w-full bg-violet-500 text-white py-2 rounded-xl">
+Guardar
+</button>
 
-                <div class="space-y-6">
-                    <!-- Gasto -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center">
-                                <span class="material-icons-round">restaurant</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-800">Jumbo Bilbao</p>
-                                <p class="text-xs text-slate-400 font-medium">Hace 2 horas • Supermercado</p>
-                            </div>
-                        </div>
-                        <span class="font-black text-red-500">-$42.500</span>
-                    </div>
+<div id="lista" class="mt-4"></div>
 
-                    <!-- Gasto -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-violet-50 text-violet-500 rounded-2xl flex items-center justify-center">
-                                <span class="material-icons-round">smart_display</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-800">Netflix Premium</p>
-                                <p class="text-xs text-slate-400 font-medium">Ayer • Entretenimiento</p>
-                            </div>
-                        </div>
-                        <span class="font-black text-red-500">-$12.900</span>
-                    </div>
+</div>
 
-                    <!-- Ingreso -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center">
-                                <span class="material-icons-round">login</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-800">Transferencia Recibida</p>
-                                <p class="text-xs text-slate-400 font-medium">15 Oct • Ingreso</p>
-                            </div>
-                        </div>
-                        <span class="font-black text-emerald-500">+$150.000</span>
-                    </div>
+<!-- METAS -->
+<div id="metas" class="pantalla">
 
-                    <!-- Gasto -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center">
-                                <span class="material-icons-round">local_gas_station</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-800">Copec Las Condes</p>
-                                <p class="text-xs text-slate-400 font-medium">14 Oct • Transporte</p>
-                            </div>
-                        </div>
-                        <span class="font-black text-red-500">-$35.000</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+<input id="metaNombre" placeholder="Meta (ej: Viaje)" class="w-full p-2 border rounded mb-2">
+<input id="metaMonto" type="number" placeholder="Monto objetivo" class="w-full p-2 border rounded mb-2">
+
+<button onclick="guardarMeta()" class="w-full bg-green-500 text-white py-2 rounded-xl">
+Guardar Meta
+</button>
+
+<div id="metasLista" class="mt-4"></div>
+
+</div>
+
+<!-- PERFIL -->
+<div id="perfil" class="pantalla">
+
+<input id="nombre" placeholder="Tu nombre" class="w-full p-2 border rounded mb-2">
+
+<button onclick="guardarPerfil()" class="w-full bg-blue-500 text-white py-2 rounded-xl">
+Guardar Perfil
+</button>
+
+<p class="mt-4">Hola, <span id="nombreMostrado"></span> 💜</p>
+
+</div>
+
 </div>
 
 <script>
-function irPerfil() {
-  document.getElementById("pantallaInicio").style.display = "none";
-  document.getElementById("pantallaPerfil").style.display = "block";
+
+let datos = JSON.parse(localStorage.getItem("datos")) || [];
+let metas = JSON.parse(localStorage.getItem("metas")) || [];
+let perfil = JSON.parse(localStorage.getItem("perfil")) || {};
+
+function mostrarPantalla(id) {
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.remove("activa"));
+    document.getElementById(id).classList.add("activa");
 }
 
-function irInicio() {
-  document.getElementById("pantallaInicio").style.display = "block";
-  document.getElementById("pantallaPerfil").style.display = "none";
+function guardarStorage() {
+    localStorage.setItem("datos", JSON.stringify(datos));
 }
+
+function agregar() {
+    let d = document.getElementById("desc").value;
+    let m = Number(document.getElementById("monto").value);
+    let t = document.getElementById("tipo").value;
+    let c = document.getElementById("categoria").value;
+
+    if (!d || !m) return alert("Completa los datos");
+
+    datos.push({ d, m, t, c });
+    guardarStorage();
+    render();
+}
+
+function render() {
+    let total = 0, ingresos = 0, gastos = 0;
+
+    let lista = document.getElementById("lista");
+    let ultimos = document.getElementById("ultimos");
+
+    lista.innerHTML = "";
+    ultimos.innerHTML = "";
+
+    datos.slice().reverse().forEach((x, i) => {
+
+        if (x.t === "ingreso") {
+            total += x.m;
+            ingresos += x.m;
+        } else {
+            total -= x.m;
+            gastos += x.m;
+        }
+
+        let html = `
+        <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
+        <div>
+        <p class="font-bold">${x.d}</p>
+        <p class="text-xs">${x.c}</p>
+        </div>
+        <div class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
+        ${x.t === 'gasto' ? '-' : '+'}$${x.m}
+        </div>
+        </div>
+        `;
+
+        lista.innerHTML += html;
+
+        if (i < 3) ultimos.innerHTML += html;
+    });
+
+    document.getElementById("total").innerText = "$" + total;
+    document.getElementById("ingresos").innerText = "$" + ingresos;
+    document.getElementById("gastos").innerText = "$" + gastos;
+}
+
+function guardarMeta() {
+    let n = document.getElementById("metaNombre").value;
+    let m = document.getElementById("metaMonto").value;
+
+    metas.push({ n, m });
+    localStorage.setItem("metas", JSON.stringify(metas));
+    renderMetas();
+}
+
+function renderMetas() {
+    let cont = document.getElementById("metasLista");
+    cont.innerHTML = "";
+
+    metas.forEach(x => {
+        cont.innerHTML += `
+        <div class="bg-green-50 p-2 rounded mb-2">
+        ${x.n} - $${x.m}
+        </div>`;
+    });
+}
+
+function guardarPerfil() {
+    let n = document.getElementById("nombre").value;
+    perfil.nombre = n;
+    localStorage.setItem("perfil", JSON.stringify(perfil));
+    document.getElementById("nombreMostrado").innerText = n;
+}
+
+if (perfil.nombre) {
+    document.getElementById("nombreMostrado").innerText = perfil.nombre;
+}
+
+render();
+renderMetas();
+
 </script>
-   </div>
 
-<script>
-function irPerfil() {
-  document.getElementById("pantallaInicio").style.display = "none";
-  document.getElementById("pantallaPerfil").style.display = "block";
-}
-
-function irInicio() {
-  document.getElementById("pantallaInicio").style.display = "block";
-  document.getElementById("pantallaPerfil").style.display = "none";
-}
-</script>  
 </body>
 </html>
