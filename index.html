@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head<meta name="theme-color" content="#7c3aed">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CuidaTusLucas 💜</title>
-
+<script>
+if (!localStorage.getItem("datos")) {
+    localStorage.setItem("datos", JSON.stringify([]));
+}
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
@@ -131,7 +137,20 @@ function render() {
     let lista = document.getElementById("lista");
     let ultimos = document.getElementById("ultimos");
 
-    lista.innerHTML = "";
+    lista.innerHTML += `
+<div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
+<div>
+<p class="font-bold">${x.d}</p>
+<p class="text-xs">${x.c}</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
+${x.t === 'gasto' ? '-' : '+'}$${x.m}
+</span>
+<button onclick="eliminar(${i})" class="text-red-500">❌</button>
+</div>
+</div>
+`;
     ultimos.innerHTML = "";
 
     datos.slice().reverse().forEach((x, i) => {
