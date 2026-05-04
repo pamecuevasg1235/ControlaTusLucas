@@ -381,3 +381,29 @@
 </button>
 </nav>
 </body></html>
+<div id="pantallaPerfil" style="display:none; padding:20px;">
+  <h2>Mi Perfil</h2>
+
+  <input id="nombre" placeholder="Tu nombre"
+  style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;">
+
+  <input id="correo" placeholder="Tu correo"
+  style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;">
+
+  <button onclick="guardarPerfil()"
+  style="width:100%; padding:10px; border:none; border-radius:10px; background:#7b5cff; color:white;">
+  Guardar Perfil
+  </button>
+</div>
+<script>
+function mostrarPerfil() {
+  document.getElementById("pantallaPerfil").style.display = "block";
+}
+
+function guardarPerfil() {
+  let nombre = document.getElementById("nombre").value;
+  let correo = document.getElementById("correo").value;
+
+  alert("Guardado: " + nombre + " - " + correo);
+}
+</script>
