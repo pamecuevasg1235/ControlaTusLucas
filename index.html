@@ -4,13 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="theme-color" content="#7c3aed">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
 <title>CuidaTusLucas 💜</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
@@ -30,18 +28,22 @@ body { font-family: 'Inter', sans-serif; }
 <div class="flex justify-around mb-4">
 <button onclick="mostrarPantalla('home')">🏠</button>
 <button onclick="mostrarPantalla('movimientos')">💸</button>
-<button onclick="mostrarPantalla('metas')">🎯</button>
 <button onclick="mostrarPantalla('perfil')">👤</button>
 </div>
 
 <!-- HOME -->
 <div id="home" class="pantalla activa">
+
 <div class="bg-violet-50 p-4 rounded-xl mb-4">
 <p>Total: <span id="total">$0</span></p>
 <p>Ingresos: <span id="ingresos" class="text-green-500">$0</span></p>
 <p>Gastos: <span id="gastos" class="text-red-500">$0</span></p>
 </div>
-<div id="ultimos"></div>
+
+<canvas id="grafico"></canvas>
+
+<div id="ultimos" class="mt-4"></div>
+
 </div>
 
 <!-- MOVIMIENTOS -->
@@ -55,13 +57,6 @@ body { font-family: 'Inter', sans-serif; }
 <option value="ingreso">Ingreso</option>
 </select>
 
-<select id="categoria" class="w-full p-2 border rounded mb-2">
-<option>Comida</option>
-<option>Transporte</option>
-<option>Casa</option>
-<option>Otro</option>
-</select>
-
 <button onclick="agregar()" class="w-full bg-violet-500 text-white py-2 rounded-xl">
 Guardar
 </button>
@@ -70,31 +65,13 @@ Guardar
 
 </div>
 
-<!-- METAS -->
-<div id="metas" class="pantalla">
-
-<input id="metaNombre" placeholder="Meta (ej: Viaje)" class="w-full p-2 border rounded mb-2">
-<input id="metaMonto" type="number" placeholder="Monto objetivo" class="w-full p-2 border rounded mb-2">
-
-<button onclick="guardarMeta()" class="w-full bg-green-500 text-white py-2 rounded-xl">
-Guardar Meta
-</button>
-
-<div id="metasLista" class="mt-4"></div>
-
-</div>
-
 <!-- PERFIL -->
 <div id="perfil" class="pantalla">
-
 <input id="nombre" placeholder="Tu nombre" class="w-full p-2 border rounded mb-2">
-
 <button onclick="guardarPerfil()" class="w-full bg-blue-500 text-white py-2 rounded-xl">
-Guardar Perfil
+Guardar
 </button>
-
 <p class="mt-4">Hola, <span id="nombreMostrado"></span> 💜</p>
-
 </div>
 
 </div>
@@ -102,8 +79,8 @@ Guardar Perfil
 <script>
 
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
-let metas = JSON.parse(localStorage.getItem("metas")) || [];
 let perfil = JSON.parse(localStorage.getItem("perfil")) || {};
+let chart;
 
 function guardarStorage() {
     localStorage.setItem("datos", JSON.stringify(datos));
@@ -118,11 +95,10 @@ function agregar() {
     let d = document.getElementById("desc").value;
     let m = Number(document.getElementById("monto").value);
     let t = document.getElementById("tipo").value;
-    let c = document.getElementById("categoria").value;
 
     if (!d || !m) return alert("Completa los datos");
 
-    datos.push({ d, m, t, c });
+    datos.push({ d, m, t });
     guardarStorage();
     render();
 
@@ -157,47 +133,41 @@ function render() {
 
         let html = `
         <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
-        <div>
-        <p class="font-bold">${x.d}</p>
-        <p class="text-xs">${x.c}</p>
-        </div>
-        <div class="flex items-center gap-2">
+        <div>${x.d}</div>
+        <div class="flex gap-2">
         <span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
         ${x.t === 'gasto' ? '-' : '+'}$${x.m}
         </span>
-        <button onclick="eliminar(${i})" class="text-red-500">❌</button>
+        <button onclick="eliminar(${i})">❌</button>
         </div>
         </div>
         `;
 
         lista.innerHTML += html;
-
         if (i < 3) ultimos.innerHTML += html;
     });
 
     document.getElementById("total").innerText = "$" + total;
     document.getElementById("ingresos").innerText = "$" + ingresos;
     document.getElementById("gastos").innerText = "$" + gastos;
+
+    actualizarGrafico(ingresos, gastos);
 }
 
-function guardarMeta() {
-    let n = document.getElementById("metaNombre").value;
-    let m = document.getElementById("metaMonto").value;
+function actualizarGrafico(ingresos, gastos) {
+    const ctx = document.getElementById('grafico');
 
-    metas.push({ n, m });
-    localStorage.setItem("metas", JSON.stringify(metas));
-    renderMetas();
-}
+    if (chart) chart.destroy();
 
-function renderMetas() {
-    let cont = document.getElementById("metasLista");
-    cont.innerHTML = "";
-
-    metas.forEach(x => {
-        cont.innerHTML += `
-        <div class="bg-green-50 p-2 rounded mb-2">
-        ${x.n} - $${x.m}
-        </div>`;
+    chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ingresos', 'Gastos'],
+            datasets: [{
+                data: [ingresos, gastos],
+                backgroundColor: ['#22c55e', '#ef4444']
+            }]
+        }
     });
 }
 
@@ -213,7 +183,6 @@ if (perfil.nombre) {
 }
 
 render();
-renderMetas();
 
 </script>
 
