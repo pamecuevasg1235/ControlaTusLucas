@@ -3,28 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ControlaTusLucas</title>
+<title>Controla tus Lucas</title>
 
 <style>
-:root{
-  --main:#7b4dff;
-  --bg:#f3f4f6;
-}
 body{
   margin:0;
   font-family:Arial;
-  background:var(--bg);
+  background:#f5f6fa;
 }
 
 .header{
-  background:linear-gradient(45deg,#7b4dff,#e040fb);
+  background:linear-gradient(45deg,#7b4dff,#a64dff);
   color:white;
+  text-align:center;
   padding:20px;
-  border-radius:0 0 20px 20px;
 }
-.saldo{
-  font-size:28px;
-  font-weight:bold;
+
+.header img{
+  width:60px;
+  margin-bottom:10px;
 }
 
 .card{
@@ -32,15 +29,25 @@ body{
   margin:15px;
   padding:15px;
   border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.item{
-  display:flex;
-  justify-content:space-between;
+input, select{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+button{
   margin-top:10px;
   padding:10px;
-  background:#fafafa;
+  border:none;
   border-radius:10px;
+  background:#7b4dff;
+  color:white;
+  font-weight:bold;
 }
 
 .fab{
@@ -50,10 +57,12 @@ body{
   width:60px;
   height:60px;
   border-radius:50%;
-  font-size:30px;
-  background:var(--main);
+  background:#7b4dff;
   color:white;
-  border:none;
+  font-size:30px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .modal{
@@ -74,49 +83,15 @@ body{
   border-radius:15px;
   width:90%;
 }
-
-input,textarea,select{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
-
-button{
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:var(--main);
-  color:white;
-  margin-top:10px;
-}
-
-.bar{
-  height:10px;
-  background:#ddd;
-  border-radius:10px;
-  margin-top:5px;
-}
-.bar-fill{
-  height:10px;
-  background:var(--main);
-  border-radius:10px;
-}
 </style>
 </head>
 
 <body>
-<div style="text-align:center;">
-  <img src="ChatGPT Image 5 may 2026, 08_01_17.png" width="120">
-  <h2>Controla tus Lucas</h2>
-</div>
-<div class="header">
-  <h2>ControlaTusLucas</h2>
-  <div class="saldo" id="saldo">$0</div>
-</div>
 
-<div class="card">
-  <h3>Resumen por categoría</h3>
-  <div id="grafico"></div>
+<div class="header">
+  <img src="ChatGPT Image 5 may 2026, 08_01_17.png">
+  <h2 id="saludo">Hola 👋</h2>
+  <h1 id="saldo">$0</h1>
 </div>
 
 <div class="card">
@@ -124,56 +99,25 @@ button{
   <div id="lista"></div>
 </div>
 
-<div class="card">
-  <h3>Metas</h3>
-  <div id="metas"></div>
-  <button onclick="crearMeta()">+ Nueva meta</button>
-</div>
+<div class="fab" onclick="abrir()">+</div>
 
-<button class="fab" onclick="abrirModal()">+</button>
-
-<!-- MODAL -->
 <div class="modal" id="modal">
-<div class="modal-content">
+  <div class="modal-content">
+    <h2>Agregar movimiento</h2>
 
-<h3>Agregar movimiento</h3>
+    <input id="nombre" placeholder="Nombre">
+    <input id="monto" type="number" placeholder="Monto">
 
-<input id="nombre" placeholder="Descripción">
-<input id="monto" type="number" placeholder="Monto">
+    <select id="tipo">
+      <option value="ingreso">Ingreso</option>
+      <option value="gasto">Gasto</option>
+    </select>
 
-<select id="moneda">
-<option value="CLP">CLP</option>
-<option value="USD">USD</option>
-<option value="EUR">EUR</option>
-</select>
-
-<select id="tipo">
-<option value="gasto">Gasto</option>
-<option value="ingreso">Ingreso</option>
-</select>
-
-<select id="categoria">
-<option>Alimentación</option>
-<option>Transporte</option>
-<option>Educación</option>
-<option>Ahorro</option>
-<option>Otros</option>
-</select>
-
-<button onclick="agregar()">Guardar</button>
-
-<hr>
-
-<h3>📧 Detectar desde correo</h3>
-<textarea id="correo" placeholder="Pega aquí el correo del banco"></textarea>
-<button onclick="detectar()">Detectar gasto</button>
-
-<button onclick="cerrarModal()">Cerrar</button>
-
-</div>
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="cerrar()">Cerrar</button>
+  </div>
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>
