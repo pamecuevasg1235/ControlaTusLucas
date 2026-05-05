@@ -124,13 +124,15 @@ function render() {
 
     datos.slice().reverse().forEach((x, i) => {
 
-        if (x.t === "ingreso") {
-            total += x.m;
-            ingresos += x.m;
-        } else {
-            total -= x.m;
-            gastos += x.m;
-        }
+     if (x.t === "ingreso") {
+    total += x.m;
+    ingresos += x.m;
+} else if (x.t === "gasto") {
+    total -= x.m;
+    gastos += x.m;
+} else if (x.t === "ahorro") {
+    total -= x.m;
+}
 
         let html = `
         <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
