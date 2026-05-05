@@ -123,6 +123,7 @@ function render() {
     ultimos.innerHTML = "";
 
     datos.slice().reverse().forEach((x, i) => {
+    let indexReal = datos.length - 1 - i;
 
      if (x.t === "ingreso") {
     total += x.m;
@@ -141,7 +142,7 @@ function render() {
         <span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
         ${x.t === 'gasto' ? '-' : '+'}$${x.m}
         </span>
-        <button onclick="eliminar(${i})">❌</button>
+      <button onclick="eliminar(${indexReal})"> ❌</button>
         </div>
         </div>
         `;
