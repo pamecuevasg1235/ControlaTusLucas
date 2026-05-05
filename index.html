@@ -140,16 +140,18 @@ function render() {
         <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
         <div>${x.d}</div>
         <div class="flex gap-2">
-        <span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
-        ${x.t === 'gasto' ? '-' : '+'}$${x.m}
-        </span>
-      <button onclick="eliminar(${indexReal})"> ❌</button>
-        </div>
+        <div class="flex gap-2">
+<span class="${x.t === 'gasto' ? 'text-red-500' : x.t === 'ahorro' ? 'text-blue-500' : 'text-green-500'}">
+${x.t === 'gasto' || x.t === 'ahorro' ? '-' : '+'}$${x.m}
+</span>
+
+<button onclick="eliminar(${i})" class="text-red-500">❌</button>
+</div>
         </div>
         `;
 
         lista.innerHTML += html;
-        if (i < 3) ultimos.innerHTML += html;
+        if ((datos.length - 1 - i) < 3) ultimos.innerHTML += html;
     });
 
     document.getElementById("total").innerText = "$" + total;
