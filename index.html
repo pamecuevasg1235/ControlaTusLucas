@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
-<head<meta name="theme-color" content="#7c3aed">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#7c3aed">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>CuidaTusLucas 💜</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CuidaTusLucas 💜</title>
@@ -103,8 +108,6 @@ Guardar Perfil
 
 </div>
 
-<script>
-
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
 let metas = JSON.parse(localStorage.getItem("metas")) || [];
 let perfil = JSON.parse(localStorage.getItem("perfil")) || {};
@@ -114,47 +117,49 @@ function mostrarPantalla(id) {
     document.getElementById(id).classList.add("activa");
 }
 
-function guardarStorage() {
-    localStorage.setItem("datos", JSON.stringify(datos));
-}
-
-function agregar() {
-    let d = document.getElementById("desc").value;
-    let m = Number(document.getElementById("monto").value);
-    let t = document.getElementById("tipo").value;
-    let c = document.getElementById("categoria").value;
-
-    if (!d || !m) return alert("Completa los datos");
-
-    datos.push({ d, m, t, c });
-    guardarStorage();
-    render();
-}
-
 function render() {
     let total = 0, ingresos = 0, gastos = 0;
 
     let lista = document.getElementById("lista");
     let ultimos = document.getElementById("ultimos");
 
-    lista.innerHTML += `
-<div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
-<div>
-<p class="font-bold">${x.d}</p>
-<p class="text-xs">${x.c}</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
-${x.t === 'gasto' ? '-' : '+'}$${x.m}
-</span>
-<button onclick="eliminar(${i})" class="text-red-500">❌</button>
-</div>
-</div>
-`;
+    lista.innerHTML = "";
     ultimos.innerHTML = "";
 
     datos.slice().reverse().forEach((x, i) => {
 
+        if (x.t === "ingreso") {
+            total += x.m;
+            ingresos += x.m;
+        } else {
+            total -= x.m;
+            gastos += x.m;
+        }
+
+        let html = `
+        <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
+        <div>
+        <p class="font-bold">${x.d}</p>
+        <p class="text-xs">${x.c}</p>
+        </div>
+        <div class="flex items-center gap-2">
+        <span class="${x.t === 'gasto' ? 'text-red-500' : 'text-green-500'}">
+        ${x.t === 'gasto' ? '-' : '+'}$${x.m}
+        </span>
+        <button onclick="eliminar(${i})" class="text-red-500">❌</button>
+        </div>
+        </div>
+        `;
+
+        lista.innerHTML += html;
+
+        if (i < 3) ultimos.innerHTML += html;
+    });
+
+    document.getElementById("total").innerText = "$" + total;
+    document.getElementById("ingresos").innerText = "$" + ingresos;
+    document.getElementById("gastos").innerText = "$" + gastos;
+}
         if (x.t === "ingreso") {
             total += x.m;
             ingresos += x.m;
@@ -220,7 +225,11 @@ if (perfil.nombre) {
 render();
 renderMetas();
 
-</script>
+</script>function eliminar(i) {
+    datos.splice(i, 1);
+    guardarStorage();
+    render();
+}
 
 </body>
 </html>
