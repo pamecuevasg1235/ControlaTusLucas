@@ -1,125 +1,66 @@
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
-let metas = JSON.parse(localStorage.getItem("metas")) || [];
 
-const tasas = {
-  USD:900,
-  EUR:1000,
-  CLP:1
-};
+function guardarStorage(){
+  localStorage.setItem("datos", JSON.stringify(datos));
+}
+
+function abrir(){
+  document.getElementById("modal").style.display="flex";
+}
+
+function cerrar(){
+  document.getElementById("modal").style.display="none";
+}
 
 function guardar(){
-  localStorage.setItem("datos", JSON.stringify(datos));
-  localStorage.setItem("metas", JSON.stringify(metas));
-}
+  let nombre = document.getElementById("nombre").value;
+  let monto = parseFloat(document.getElementById("monto").value);
+  let tipo = document.getElementById("tipo").value;
 
-function abrirModal(){modal.style.display="flex";}
-function cerrarModal(){modal.style.display="none";}
-
-function agregar(){
-  let nombre=nombreEl.value;
-  let monto=parseFloat(montoEl.value);
-  let moneda=monedaEl.value;
-  let tipo=tipoEl.value;
-  let categoria=categoriaEl.value;
-
-  if(!nombre||!monto) return;
+  if(!nombre || !monto){
+    alert("Completa los datos");
+    return;
+  }
 
   datos.push({
-    id:Date.now(),
-    nombre,monto,moneda,tipo,categoria
+    nombre,
+    monto,
+    tipo
   });
 
-  guardar();
-  cerrarModal();
+  guardarStorage();
+  cerrar();
   mostrar();
 }
-
-function eliminar(id){
-  datos=datos.filter(d=>d.id!==id);
-  guardar();
-  mostrar();
-}
-
-function convertir(m,mon){return m*tasas[mon];}
 
 function mostrar(){
-  let saldo=0;
+  let lista = document.getElementById("lista");
   lista.innerHTML="";
-  let catTotal={};
+
+  let total = 0;
 
   datos.forEach(d=>{
-    let v=convertir(d.monto,d.moneda);
+    let div = document.createElement("div");
+    div.innerHTML = d.nombre + " - $" + d.monto;
+    lista.appendChild(div);
 
-    if(d.tipo==="gasto"){
-      saldo-=v;
-      catTotal[d.categoria]=(catTotal[d.categoria]||0)+v;
-    }else saldo+=v;
-
-    lista.innerHTML+=`
-      <div class="item">
-        <span>${d.nombre} (${d.categoria})</span>
-        <span>
-          ${d.tipo==="gasto"?"-":"+"}$${d.monto}
-          <button onclick="eliminar(${d.id})">❌</button>
-        </span>
-      </div>`;
+    if(d.tipo === "ingreso") total += d.monto;
+    else total -= d.monto;
   });
 
-  saldoEl.innerText="$"+saldo.toLocaleString();
+  document.getElementById("saldo").innerText = "$" + total;
+}
 
-  // gráfico
-  grafico.innerHTML="";
-  let total=Object.values(catTotal).reduce((a,b)=>a+b,0);
+function nombreUsuario(){
+  let nombre = localStorage.getItem("nombre");
 
-  for(let c in catTotal){
-    let p=(catTotal[c]/total)*100;
-    grafico.innerHTML+=`
-      <div>${c} (${p.toFixed(0)}%)</div>
-      <div class="bar"><div class="bar-fill" style="width:${p}%"></div></div>`;
+  if(!nombre){
+    nombre = prompt("¿Cómo te llamas?");
+    localStorage.setItem("nombre", nombre);
   }
 
-  mostrarMetas(saldo);
+  document.getElementById("saludo").innerText = "Hola " + nombre + " 👋";
 }
 
-function crearMeta(){
-  let nombre=prompt("Nombre meta");
-  let objetivo=parseFloat(prompt("Monto objetivo"));
-
-  metas.push({id:Date.now(),nombre,objetivo});
-  guardar();
-  mostrar();
-}
-
-function mostrarMetas(saldo){
-  metasEl.innerHTML="";
-  metas.forEach(m=>{
-    let p=(saldo/m.objetivo)*100;
-    metasEl.innerHTML+=`
-      <div>${m.nombre}</div>
-      <div class="bar"><div class="bar-fill" style="width:${p}%"></div></div>`;
-  });
-}
-
-function detectar(){
-  let texto = document.getElementById("correo").value;
-
-  let monto = texto.match(/\$?\d+[\.,]?\d*/);
-  let nombre = texto.split(" ").slice(0,3).join(" ");
-
-  if(monto){
-    datos.push({
-      id: Date.now(),
-      nombre: nombre,
-      monto: parseFloat(monto[0].replace(/[^\d]/g,"")),
-      moneda:"CLP",
-      tipo: "gasto",
-      categoria:"Otros"
-    });
-
-    guardar();
-    mostrar();
-    alert("Gasto detectado 💥");
-  }
-}
-
+nombreUsuario();
 mostrar();
