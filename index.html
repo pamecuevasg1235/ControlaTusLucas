@@ -3,195 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CuidaTusLucas 💜</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<title>ControlaTusLucas</title>
 
 <style>
-body { font-family: 'Inter', sans-serif; }
-.pantalla { display: none; }
-.activa { display: block; }
+:root{
+  --main:#7b4dff;
+  --bg:#f3f4f6;
+}
+body{
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+}
+
+.header{
+  background:linear-gradient(45deg,#7b4dff,#e040fb);
+  color:white;
+  padding:20px;
+  border-radius:0 0 20px 20px;
+}
+.saldo{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.card{
+  background:white;
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  padding:10px;
+  background:#fafafa;
+  border-radius:10px;
+}
+
+.fab{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  font-size:30px;
+  background:var(--main);
+  color:white;
+  border:none;
+}
+
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  width:90%;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+
+button{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:var(--main);
+  color:white;
+  margin-top:10px;
+}
+
+.bar{
+  height:10px;
+  background:#ddd;
+  border-radius:10px;
+  margin-top:5px;
+}
+.bar-fill{
+  height:10px;
+  background:var(--main);
+  border-radius:10px;
+}
 </style>
 </head>
 
-<body class="bg-gradient-to-br from-pink-100 to-violet-100 min-h-screen p-4">
+<body>
 
-<div class="max-w-md mx-auto bg-white rounded-3xl p-6 shadow-xl">
-
-<h1 class="text-2xl font-black mb-4 text-center">💜 CuidaTusLucas</h1>
-
-<!-- NAV -->
-<div class="flex justify-around mb-4">
-<button onclick="mostrarPantalla('home')">🏠</button>
-<button onclick="mostrarPantalla('movimientos')">💸</button>
-<button onclick="mostrarPantalla('perfil')">👤</button>
+<div class="header">
+  <h2>ControlaTusLucas</h2>
+  <div class="saldo" id="saldo">$0</div>
 </div>
 
-<!-- HOME -->
-<div id="home" class="pantalla activa">
-
-<div class="bg-violet-50 p-4 rounded-xl mb-4">
-<p>Total: <span id="total">$0</span></p>
-<p>Ingresos: <span id="ingresos" class="text-green-500">$0</span></p>
-<p>Gastos: <span id="gastos" class="text-red-500">$0</span></p>
+<div class="card">
+  <h3>Resumen por categoría</h3>
+  <div id="grafico"></div>
 </div>
 
-<canvas id="grafico"></canvas>
-
-<div id="ultimos" class="mt-4"></div>
-
+<div class="card">
+  <h3>Movimientos</h3>
+  <div id="lista"></div>
 </div>
 
-<!-- MOVIMIENTOS -->
-<div id="movimientos" class="pantalla">
+<div class="card">
+  <h3>Metas</h3>
+  <div id="metas"></div>
+  <button onclick="crearMeta()">+ Nueva meta</button>
+</div>
 
-<input id="desc" placeholder="Descripción" class="w-full p-2 border rounded mb-2">
-<input id="monto" type="number" placeholder="Monto" class="w-full p-2 border rounded mb-2">
+<button class="fab" onclick="abrirModal()">+</button>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<h3>Agregar movimiento</h3>
+
+<input id="nombre" placeholder="Descripción">
+<input id="monto" type="number" placeholder="Monto">
+
+<select id="moneda">
+<option value="CLP">CLP</option>
+<option value="USD">USD</option>
+<option value="EUR">EUR</option>
+</select>
 
 <select id="tipo">
 <option value="gasto">Gasto</option>
 <option value="ingreso">Ingreso</option>
-<option value="ahorro">Ahorro</option>
 </select>
 
-<button onclick="agregar()" class="w-full bg-violet-500 text-white py-2 rounded-xl">
-Guardar
-</button>
+<select id="categoria">
+<option>Alimentación</option>
+<option>Transporte</option>
+<option>Educación</option>
+<option>Ahorro</option>
+<option>Otros</option>
+</select>
 
-<div id="lista" class="mt-4"></div>
+<button onclick="agregar()">Guardar</button>
+
+<hr>
+
+<h3>📧 Detectar desde correo</h3>
+<textarea id="correo" placeholder="Pega aquí el correo del banco"></textarea>
+<button onclick="detectar()">Detectar gasto</button>
+
+<button onclick="cerrarModal()">Cerrar</button>
 
 </div>
-
-<!-- PERFIL -->
-<div id="perfil" class="pantalla">
-<input id="nombre" placeholder="Tu nombre" class="w-full p-2 border rounded mb-2">
-<button onclick="guardarPerfil()" class="w-full bg-blue-500 text-white py-2 rounded-xl">
-Guardar
-</button>
-<p class="mt-4">Hola, <span id="nombreMostrado"></span> 💜</p>
 </div>
 
-</div>
-
-<script>
-
-let datos = JSON.parse(localStorage.getItem("datos")) || [];
-let perfil = JSON.parse(localStorage.getItem("perfil")) || {};
-let chart;
-
-function guardarStorage() {
-    localStorage.setItem("datos", JSON.stringify(datos));
-}
-
-function mostrarPantalla(id) {
-    document.querySelectorAll(".pantalla").forEach(p => p.classList.remove("activa"));
-    document.getElementById(id).classList.add("activa");
-}
-
-function agregar() {
-    let d = document.getElementById("desc").value;
-    let m = Number(document.getElementById("monto").value);
-    let t = document.getElementById("tipo").value;
-
-    if (!d || !m) return alert("Completa los datos");
-
-    datos.push({ d, m, t });
-    guardarStorage();
-    render();
-
-    document.getElementById("desc").value = "";
-    document.getElementById("monto").value = "";
-}
-
-function eliminar(i) {
-    datos.splice(i, 1);
-    guardarStorage();
-    render();
-}
-
-function render() {
-    let total = 0, ingresos = 0, gastos = 0;
-
-    let lista = document.getElementById("lista");
-    let ultimos = document.getElementById("ultimos");
-
-    lista.innerHTML = "";
-    ultimos.innerHTML = "";
-
-   for (let i = datos.length - 1; i >= 0; i--) {
-
-    let x = datos[i];
-
-     if (x.t === "ingreso") {
-    total += x.m;
-    ingresos += x.m;
-} else if (x.t === "gasto") {
-    total -= x.m;
-    gastos += x.m;
-} else if (x.t === "ahorro") {
-    total -= x.m;
-}
-
-        let html = `
-        <div class="flex justify-between bg-gray-50 p-2 rounded mb-2">
-        <div>${x.d}</div>
-        <div class="flex gap-2">
-        <div class="flex gap-2">
-<span class="${x.t === 'gasto' ? 'text-red-500' : x.t === 'ahorro' ? 'text-blue-500' : 'text-green-500'}">
-${x.t === 'gasto' || x.t === 'ahorro' ? '-' : '+'}$${x.m}
-</span>
-
-<button onclick="eliminar(${i})" class="text-red-500">❌</button>
-</div>
-        </div>
-        `;
-
-        lista.innerHTML += html;
-        if ((datos.length - 1 - i) < 3) ultimos.innerHTML += html;
-    });
-
-    document.getElementById("total").innerText = "$" + total;
-    document.getElementById("ingresos").innerText = "$" + ingresos;
-    document.getElementById("gastos").innerText = "$" + gastos;
-
-    actualizarGrafico(ingresos, gastos);
-}
-
-function actualizarGrafico(ingresos, gastos) {
-    const ctx = document.getElementById('grafico');
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Ingresos', 'Gastos'],
-            datasets: [{
-                data: [ingresos, gastos],
-                backgroundColor: ['#22c55e', '#ef4444']
-            }]
-        }
-    });
-}
-
-function guardarPerfil() {
-    let n = document.getElementById("nombre").value;
-    perfil.nombre = n;
-    localStorage.setItem("perfil", JSON.stringify(perfil));
-    document.getElementById("nombreMostrado").innerText = n;
-}
-
-if (perfil.nombre) {
-    document.getElementById("nombreMostrado").innerText = perfil.nombre;
-}
-
-render();
-
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
